@@ -196,6 +196,6 @@ DCEL.prototype.draw = function() {
 
     c.closePath();
     c.stroke();
-    c.fill();
+    //c.fill();
   }
 }
