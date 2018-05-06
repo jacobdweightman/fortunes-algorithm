@@ -2,8 +2,7 @@ var count = 0;
 
 function Breakpoint(site1, site2) {
   /* A breakpoint is the point of intersection between the parabolas with site1
-   * and site2 as their foci, and with the sweep line as their directrix. It is
-   * assumed that site1.x < site2.x. */
+   * and site2 as their foci, and with the sweep line as their directrix. */
   this.parent = undefined;
   this.left = undefined;
   this.right = undefined;
@@ -24,9 +23,6 @@ Breakpoint.prototype.compute = function(d) {
   let a = s2.y - s1.y;
   let b = 2*(s2.x*(s1.y - d) - s1.x*(s2.y - d));
   let c = s1.x**2 * (s2.y - d) - s2.x**2 * (s1.y - d) + (s1.y - s2.y)*(s1.y - d)*(s2.y - d);
-  //let a = 1/(s1.y-d) - 1/(s2.y-d);
-  //let b = -2*(s1.x/(s1.y-d) - s2.x/(s2.y-d));
-  //let c = s1.y - s2.y;
 
   if(Math.abs(a) < 0.001) { // if a=0, quadratic formula does not apply
     console.log("a = 0");
@@ -43,8 +39,8 @@ Breakpoint.prototype.compute = function(d) {
   }
 }
 
-/* TODO: remove! */
 Breakpoint.prototype.traverse = function() {
+  /* Does an in-order traversal of the tree. Useful for debugging. */
   this.left.traverse();
   console.log(this.count);
   this.right.traverse();

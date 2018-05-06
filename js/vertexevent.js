@@ -39,7 +39,33 @@ VertexEvent.prototype.process = function() {
     return;
   }
 
-  voronoi_vertices.push(new Vertex(this.x, this.y - this.r))
+  let matched = [];
+  for(let u of this.b.site.vertices) {
+    if(u.sites.has(this.a.site) || u.sites.has(this.c.site)) {
+      console.log("match!");
+      matched.push(u);
+    }
+  }
+
+  let prevEdge = undefined;
+  if(matched.length !== 0) {
+    prevEdge = matched[0].incidentEdge;
+  }
+
+  /*if(this.b.site.vertices[0] !== undefined) {
+    prevEdge = this.b.site.vertices[0].incidentEdge;
+    console.log(prevEdge);
+  }*/
+  let v = dcel.addVert(this.x, this.y - this.r, prevEdge); // 0 is wrong
+  v.sites = new Set([this.a.site, this.b.site, this.c.site]);
+
+  if(matched.length === 2) {
+    dcel.splitFace(v, matched[1].incidentEdge);
+  }
+
+  this.a.site.vertices.push(v);
+  this.b.site.vertices.push(v);
+  this.c.site.vertices.push(v);
 
   console.log("VertexEvent:");
   console.log(this);

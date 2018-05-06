@@ -1,4 +1,5 @@
 function Vertex(x, y) {
+  /* A point in 2d space. Has a reference to the incident edge. */
   if(x == undefined || y == undefined) {
     console.log("random!");
     this.x = Math.floor(800 * Math.random());
@@ -9,9 +10,14 @@ function Vertex(x, y) {
   }
 
   this.incidentEdge = undefined;
+
+  this.sites = undefined;
 }
 
 function Edge() {
+  /* Half a directed edge. Stores a reference to the vertex it points to, the
+   * other half edge between the same vertices, the face to its left, and the
+   * segments before and after it on that face. */
   this.target = undefined;
   this.twin = undefined;
   this.incidentFace = undefined;
@@ -20,6 +26,7 @@ function Edge() {
 }
 
 function Face(color) {
+  /* Represents a polygon. It stores a reference to an edge on its boundary. */
   this.start = undefined;
 
   if(color == undefined) {
@@ -38,8 +45,8 @@ function DCEL() {
   let infiniteFace = new Face();
   this.faces = new Set([infiniteFace]);
 
-  let v1 = new Vertex(0, 0);
-  let v2 = new Vertex(0, 0);
+  let v1 = new Vertex(-100, -100);
+  let v2 = new Vertex(-100, -100);
 
   e = new Edge();
   ep = new Edge();
@@ -69,10 +76,19 @@ function DCEL() {
 }
 
 DCEL.prototype.addVert = function(x, y, prevEdge) {
+  console.log("addVert");
+  if(prevEdge !== undefined) {
+    console.log(prevEdge.target);
+  }
   /* Create a vertex with the given coordinates, and insert it into the graph
    * with two half edges from the target of prevEdge and on the same face as
    * prevEdge. A reference to the new vertex is returned. */
    if(this.order < 2) {
+     if(this.order == 0) {
+       this.vertices[1].x = x;
+       this.vertices[1].y = y;
+     }
+
      this.vertices[this.order].x = x;
      this.vertices[this.order].y = y;
      this.order++;
@@ -169,6 +185,7 @@ DCEL.prototype.draw = function() {
     c.fillStyle = f.color;
 
     let e = f.start;
+    c.beginPath();
     c.moveTo(e.target.x, e.target.y);
 
     e = e.next;
@@ -178,6 +195,7 @@ DCEL.prototype.draw = function() {
     }
 
     c.closePath();
+    c.stroke();
     c.fill();
   }
 }

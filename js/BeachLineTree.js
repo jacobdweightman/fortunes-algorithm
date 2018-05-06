@@ -1,9 +1,13 @@
 function BeachLineTree() {
+  /* This is a tree data structure used to represent the current state of the
+   * beach line. As the sweep line progresses, segments are added and removed
+   * from this structure according to the site and vertex events that occur. */
   this.leaves = 0;
   this.root = undefined;
 }
 
 BeachLineTree.prototype.setRoot = function(site) {
+  /* Used to set the root of the tree before there are any segments on it. */
   this.root = new Segment(site);
 }
 
@@ -16,7 +20,9 @@ BeachLineTree.prototype.findAbove = function(site) {
   /* Return the segment on the beach line above the given site. */
   let node = this.root;
 
-  // traverse to leaf
+  // This is a binary search tree traversal based on the point of intersections
+  // of breakpoints. If the site being checked is left of the breakpoint go
+  // left, otherwise go right.
   while(node instanceof Breakpoint) {
     if(site.x < node.compute(site.y)) {
       node = node.left;
@@ -113,14 +119,14 @@ BeachLineTree.prototype.remove = function(segment) {
 
    // update node with segment as its left comparison
    let node = segment;
-   while(node === node.parent.right) { // TODO: handle root. Not really an issue since if the root is a leaf there aren't enough segments on the beach line for a vertex event.
+   while(node === node.parent.right) {
      node = node.parent;
    }
    node.parent.s1 = leftmost.site;
 
    // update node with segment as its right comparison
    node = segment;
-   while(node === node.parent.left) { // TODO: handle root
+   while(node === node.parent.left) {
      node = node.parent;
    }
    node.parent.s2 = rightmost.site;
@@ -133,21 +139,10 @@ BeachLineTree.prototype.remove = function(segment) {
    } else {
      segment.parent.parent.right = sibling;
    }
-
-   // allow removed segment to be garbage collected
-   /* TODO: fix memory leak! */
-   /*segment.parent.parent = undefined;
-
-   if(segment === segment.parent.left) {
-     segment.parent.left = undefined;
-   } else {
-     segment.parent.right = undefined;
-   }
-
-   segment.parent = undefined;*/
 }
 
-/* TODO: remove! */
 BeachLineTree.prototype.traverse = function() {
+  /* This method is useful for debugging. Perform an in-order traversal of the
+   * tree. */
   this.root.traverse();
 }
