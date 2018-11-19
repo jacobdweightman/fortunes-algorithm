@@ -58,8 +58,34 @@ Segment.prototype.next = function() {
   return succ;
 }
 
-/* TODO: remove! */
-Segment.prototype.traverse = function() {
-  //console.log(this.site.x, this.site.y);
-  console.log(this);
+Segment.prototype.inOrderList = function() {
+  return [this];
+}
+
+Segment.prototype.draw = function(left, right, directrix) {
+  if(left > right) {console.log("omitted"); return;}
+  console.log("segment draw");
+
+  let s = this.site;
+
+  if(directrix - this.site.y < 2) {
+    // directrix very close to the site! Don't want to divide by ~zero.
+    // TODO: draw vertical line to the rest of beachline
+    c.moveTo(s.x, s.y);
+    c.lineTo(s.x, s.y-100);
+    c.stroke();
+  } else {
+    let x = left;
+    let y = ((x-s.x)**2 + s.y**2 - directrix**2) / (2*(s.y - directrix));
+
+    c.moveTo(x, y);
+
+    while(x < right) {
+      x += 3;
+      y = ((x-s.x)**2 + s.y**2 - directrix**2) / (2*(s.y - directrix));
+      c.lineTo(x, y);
+    }
+
+    c.stroke();
+  }
 }

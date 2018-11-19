@@ -122,14 +122,14 @@ BeachLineTree.prototype.remove = function(segment) {
    while(node === node.parent.right) {
      node = node.parent;
    }
-   node.parent.s1 = leftmost.site;
+   node.parent.s1 = segment.prev().site;//leftmost.site; CHANGED
 
    // update node with segment as its right comparison
    node = segment;
    while(node === node.parent.left) {
      node = node.parent;
    }
-   node.parent.s2 = rightmost.site;
+   node.parent.s2 = segment.next().site;//rightmost.site; CHANGED
 
    // promote sibling to replace parent
    sibling.parent = segment.parent.parent;
@@ -141,8 +141,43 @@ BeachLineTree.prototype.remove = function(segment) {
    }
 }
 
-BeachLineTree.prototype.traverse = function() {
-  /* This method is useful for debugging. Perform an in-order traversal of the
-   * tree. */
-  this.root.traverse();
+BeachLineTree.prototype.inOrderList = function() {
+  /* Returns a list containing the in-order traversal of the beach line tree. */
+  if(this.root) {
+    return this.root.inOrderList();
+  } else {
+    return [];
+  }
 }
+
+BeachLineTree.prototype.draw = function(sweepLineY) {
+  /* Used for visualizing the beach line. sweepLineY represents the y-coordinate
+   * of the sweepline, which determines how "wide" the arcs of the beachline
+   * are. */
+   console.log("beachline draw");
+
+   c.strokeStyle = "#F00";
+
+   let order = this.inOrderList();
+   for(let i=0; i<order.length; i++) {
+     if(order[i] instanceof Breakpoint) {
+       if(order[i].s1 != order[i-1].site) console.log("PROBLEM TO THE LEFT");
+       if(order[i].s2 != order[i+1].site) console.log("PROBLEM TO THE RIGHT");
+       continue;
+     }
+
+     let left = 0, right = 800;
+
+     if(i >= 1) {
+       if(!(order[i-1] instanceof Breakpoint)) console.log("NOT A BREAKPOINT!");
+       left = order[i-1].compute(sweepLineY);
+     }
+
+     if(i < order.length-1) {
+       right = order[i+1].compute(sweepLineY)
+     }
+     //console.log("left: ", left);
+     //console.log("right: ", right);
+     order[i].draw(left, right, sweepLineY);
+   }
+};

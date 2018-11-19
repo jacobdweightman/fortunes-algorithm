@@ -4,6 +4,7 @@ var dcel;
 
 var Q; // priority queue of site events and vertex events
 var T; // tree representing beach line
+var y; // the y-coordinate of the sweepline
 
 var voronoi_vertices;
 
@@ -84,6 +85,7 @@ function keydown() {
   }
 
   let p = Q.poll();
+  y = p.y;
   p.process();
 
   draw();
@@ -97,6 +99,9 @@ function draw() {
   // clear screen
   c.fillStyle = "#FFF";
   c.fillRect(0, 0, 800, 600);
+
+  // draw beachline
+  T.draw(y);
 
   // vertices
   dcel.draw()

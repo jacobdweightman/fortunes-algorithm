@@ -39,9 +39,8 @@ Breakpoint.prototype.compute = function(d) {
   }
 }
 
-Breakpoint.prototype.traverse = function() {
-  /* Does an in-order traversal of the tree. Useful for debugging. */
-  this.left.traverse();
-  console.log(this.count);
-  this.right.traverse();
+Breakpoint.prototype.inOrderList = function() {
+  let llist = this.left.inOrderList();
+  let rlist = this.right.inOrderList();
+  return llist.concat([this], rlist);
 }

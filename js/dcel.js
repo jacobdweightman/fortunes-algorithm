@@ -181,6 +181,8 @@ DCEL.prototype.splitFace = function(v, prevEdge) {
 
 DCEL.prototype.draw = function() {
   /* draw this DCEL on the canvas */
+  c.strokeStyle = "#000";
+
   for(let f of this.faces) {
     c.fillStyle = f.color;
 
