@@ -31,17 +31,18 @@ html, body {
 
 #headline {
   width: 100%;
-  height: calc(100% - 12rem);
+  height: 20rem;
   background: linear-gradient(-6deg, #ff8147 30%, #af572f 32%, #FFF 32%);
 }
 
 #headline > h1 {
+  margin: 0;
   text-align: center;
   color: #ff8147;
   font-size: 3rem;
   font-weight: bold;
   position: relative;
-  top: 30%;
+  top: 35%;
   transform: translateY(-50%);
 }
 
