@@ -1,0 +1,67 @@
+@font-face {
+    font-family: "Heebo";
+    src: url("../fonts/Heebo/Heebo-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Heebo";
+    src: url("../../fonts/Heebo/Heebo-Light.ttf");
+    font-weight: lighter;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Heebo";
+    src: url("../../fonts/Heebo/Heebo-Bold.ttf");
+    font-weight: bold;
+    font-style: normal;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #382c1b;
+  font-family: Heebo;
+  background-color: #ff8147;
+}
+
+#headline {
+  width: 100%;
+  height: calc(100% - 12rem);
+  background: linear-gradient(-6deg, #ff8147 30%, #af572f 32%, #FFF 32%);
+}
+
+#headline > h1 {
+  text-align: center;
+  color: #ff8147;
+  font-size: 3rem;
+  font-weight: bold;
+  position: relative;
+  top: 30%;
+  transform: translateY(-50%);
+}
+
+.card {
+  width: 90%;
+  min-width: 850px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: #FFF;
+  border-radius: 0.2rem;
+  box-shadow: 5px 5px 10px #0008;
+}
+
+canvas {
+  width: 800px;
+  height: 600px;
+  display: block;
+  margin: 0 auto;
+  background-color: #FFF;
+}

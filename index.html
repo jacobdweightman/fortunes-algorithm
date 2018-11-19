@@ -3,32 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <title>Fortune's Algorithm</title>
-    <style>
-      html, body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        background-color: #a1d1ed;
-      }
+    <link rel="stylesheet" href="styles/main.css" />
 
-      canvas {
-        width: 800px;
-        height: 600px;
-        display: block;
-        margin: 0 auto;
-        background-color: #FFF;
-      }
-
-      #text {
-        background-color: #FFF;
-        box-sizing: border-box;
-        padding: 1em;
-        width: 800px;
-        display: block;
-        margin: 2em auto;
-      }
-    </style>
     <!-- dependencies for priority queue -->
     <script src="node_modules/fastpriorityqueue/FastPriorityQueue.js"></script>
 
@@ -43,17 +19,21 @@
     <script src="js/main.js"></script>
   </head>
   <body>
-    <br />
-    <h1>Fortune's Algorithm</h1>
-    <div id="text">
-      Press any key to advance the algorithm one step. On any particular step,
-      one of several things will happen: a site will be added to the beach line,
-      a vertex/edge will be added to the beach line. Visually, you can see the
-      Voronoi edges on the interior of the diagram as they appear. Finally, on
-      the last step, the infinite edges are added in.
+    <div id="headline">
+      <h1>Fortune's Algorithm</h1>
     </div>
+    <div class="card">
+      <p>
+        Press any key to advance the algorithm one step. On any particular step,
+        one of several things will happen: a site will be added to the beach line,
+        a vertex/edge will be added to the beach line. Visually, you can see the
+        Voronoi edges on the interior of the diagram as they appear. Finally, on
+        the last step, the infinite edges are added in.
+      </p>
+      <br />
 
-    <canvas id="voronoi" width=800 height=600></canvas>
+      <canvas id="voronoi" width=800 height=600></canvas>
+    </div>
     <br />
     <br />
   </body>
