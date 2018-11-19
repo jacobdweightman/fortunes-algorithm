@@ -7,14 +7,14 @@
 
 @font-face {
     font-family: "Heebo";
-    src: url("../../fonts/Heebo/Heebo-Light.ttf");
+    src: url("../fonts/Heebo/Heebo-Light.ttf");
     font-weight: lighter;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Heebo";
-    src: url("../../fonts/Heebo/Heebo-Bold.ttf");
+    src: url("../fonts/Heebo/Heebo-Bold.ttf");
     font-weight: bold;
     font-style: normal;
 }
