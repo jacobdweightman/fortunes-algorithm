@@ -90,4 +90,6 @@ Segment.prototype.draw = function(left, right, directrix) {
   }
 }
 
-module.exports = Segment;
+if(typeof module !== "undefined") {
+  module.exports = Segment;
+}

@@ -1,3 +1,7 @@
+if(typeof module !== "undefined") {
+  const VertexEvent = require('../js/vertexevent.js');
+}
+
 function Site(x, y) {
   this.x = x;
   this.y = y;
@@ -38,4 +42,6 @@ Site.prototype.process = function() {
   }
 }
 
-module.exports = Site;
+if(typeof module !== "undefined") {
+  module.exports = Site;
+}

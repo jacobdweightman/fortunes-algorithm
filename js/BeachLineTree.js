@@ -1,3 +1,7 @@
+// import dependencies for node, or leave untouched for browser
+Segment = typeof module !== "undefined" ? require('../js/segment.js') : Segment;
+Breakpoint = typeof module !== "undefined" ? require('../js/breakpoint.js') : Breakpoint;
+
 function BeachLineTree() {
   /* This is a tree data structure used to represent the current state of the
    * beach line. As the sweep line progresses, segments are added and removed
@@ -195,4 +199,6 @@ BeachLineTree.prototype.draw = function(sweepLineY) {
    }
 };
 
-module.exports = BeachLineTree;
+if(typeof module !== "undefined") {
+  module.exports = BeachLineTree;
+}

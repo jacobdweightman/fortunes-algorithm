@@ -1,4 +1,3 @@
-var count = 0;
 
 function Breakpoint(site1, site2) {
   /* A breakpoint is the point of intersection between the parabolas with site1
@@ -6,8 +5,6 @@ function Breakpoint(site1, site2) {
   this.parent = undefined;
   this.left = undefined;
   this.right = undefined;
-  this.count = count;
-  count++;
 
   this.s1 = site1;
   this.s2 = site2;
@@ -29,7 +26,6 @@ Breakpoint.prototype.compute = function(d) {
   let c = s1.x**2 * (s2.y - d) - s2.x**2 * (s1.y - d) + (s1.y - s2.y)*(s1.y - d)*(s2.y - d);
 
   if(Math.abs(a) < 0.001) { // if a=0, quadratic formula does not apply
-    console.log("a = 0");
     return -c / b;
   }
 
@@ -53,4 +49,6 @@ Breakpoint.prototype.inOrderList = function() {
   return llist.concat([this], rlist);
 }
 
-module.exports = Breakpoint;
+if(typeof module !== "undefined") {
+  module.exports = Breakpoint;
+}

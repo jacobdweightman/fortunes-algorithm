@@ -210,9 +210,11 @@ DCEL.prototype.draw = function() {
   }
 }
 
-module.exports = {
-  Vertex: Vertex,
-  Edge: Edge,
-  Face: Face,
-  DCEL: DCEL
-};
+if(typeof module !== "undefined") {
+  module.exports = {
+    Vertex: Vertex,
+    Edge: Edge,
+    Face: Face,
+    DCEL: DCEL
+  };
+}

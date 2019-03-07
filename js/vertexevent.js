@@ -1,10 +1,6 @@
-function VertexEvent(a, b, c) {
-  console.log("VertexEvent constructor called:")
-  console.log(a);
-  console.log(b);
-  console.log(c);
-  console.log("\n\n");
+cross = typeof module !== "undefined" ? require('../js/utils.js') : cross;
 
+function VertexEvent(a, b, c) {
   /* Constructor for a vertex event. Takes three segments, and creates an object
    * representing the circumcircle of the three. this.x and this.y are the
    * coordinates of the bottom of the circle.  */
@@ -15,9 +11,12 @@ function VertexEvent(a, b, c) {
      throw "tried to construct degenerate VertexEvent";
    }
 
-   this.a = a;
-   this.b = b;
-   this.c = c; // IMPORTANT! this algorithm is incorrect if these are not passed in sorted order by x coordinate
+   // sort by x coordinate
+   let sorted = [a,b,c].sort(function(a,b) { return a.x - b.x; });
+
+   this.a = sorted[0];
+   this.b = sorted[1];
+   this.c = sorted[2];
 
    let as = a.site;
    let bs = b.site;
@@ -106,4 +105,6 @@ VertexEvent.prototype.process = function() {
   }
 }
 
-module.exports = VertexEvent;
+if(typeof module !== "undefined") {
+  module.exports = VertexEvent;
+}

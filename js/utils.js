@@ -5,4 +5,6 @@ function cross(a, b, c) {
    return (b.x - a.x)*(c.y - a.y) - (c.x - a.x)*(b.y - a.y);
 }
 
-module.exports = cross;
+if(typeof module !== "undefined") {
+  module.exports = cross;
+}
