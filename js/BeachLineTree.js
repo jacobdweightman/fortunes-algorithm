@@ -194,3 +194,5 @@ BeachLineTree.prototype.draw = function(sweepLineY) {
      order[i].draw(left, right, sweepLineY);
    }
 };
+
+module.exports = BeachLineTree;

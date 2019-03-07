@@ -37,3 +37,5 @@ Site.prototype.process = function() {
     Q.add(r.event);
   }
 }
+
+module.exports = Site;

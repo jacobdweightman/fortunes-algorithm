@@ -105,3 +105,5 @@ VertexEvent.prototype.process = function() {
     Q.add(ve);
   }
 }
+
+module.exports = VertexEvent;

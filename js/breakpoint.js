@@ -52,3 +52,5 @@ Breakpoint.prototype.inOrderList = function() {
   let rlist = this.right.inOrderList();
   return llist.concat([this], rlist);
 }
+
+module.exports = Breakpoint;

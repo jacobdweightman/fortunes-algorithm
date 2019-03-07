@@ -89,3 +89,5 @@ Segment.prototype.draw = function(left, right, directrix) {
     c.stroke();
   }
 }
+
+module.exports = Segment;
