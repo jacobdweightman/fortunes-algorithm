@@ -16,7 +16,11 @@ function Breakpoint(site1, site2) {
 }
 
 Breakpoint.prototype.compute = function(d) {
-  /* Compute x-coordinate of the breakpoint between left and right sites. */
+  /* This function computes the x-coordinate of the breakpoint between the left
+   * and right sites. The parameter d is the y-coordinate of the sweep line, and
+   * correspondingly defines the directrix of the parabolic arcs that make up
+   * the beach line. The breakpoint is then computed for these two parabolas,
+   * and the x-coordinate is returned. */
   let s1 = this.s1;
   let s2 = this.s2;
 
@@ -40,6 +44,10 @@ Breakpoint.prototype.compute = function(d) {
 }
 
 Breakpoint.prototype.inOrderList = function() {
+  /* This method is used for testing only. It is used for the in-order traversal
+   * of a beach line tree, defined in BeachLineTree.js. It works recursively
+   * on the left and right subtrees, then joining them in the order left, this,
+   * right. */
   let llist = this.left.inOrderList();
   let rlist = this.right.inOrderList();
   return llist.concat([this], rlist);

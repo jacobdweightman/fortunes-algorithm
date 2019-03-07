@@ -1,5 +1,6 @@
 function Vertex(x, y) {
-  /* A point in 2d space. Has a reference to the incident edge. */
+  /* A point in 2d space for use in a DCEL. When used in a DCEL, it must be able
+   * to keep track of an incident edge. */
   if(x == undefined || y == undefined) {
     console.log("random!");
     this.x = Math.floor(800 * Math.random());
@@ -15,9 +16,12 @@ function Vertex(x, y) {
 }
 
 function Edge() {
-  /* Half a directed edge. Stores a reference to the vertex it points to, the
-   * other half edge between the same vertices, the face to its left, and the
-   * segments before and after it on that face. */
+  /* Half a directed edge for use in a DCEL. In a closed face on a DCEL, there
+   * are two of these half edges for each edge. One of them belongs to that
+   * face, while the other belongs to the face that shares that edge. An edge
+   * stores a reference to the vertex on which it is incident, the other half
+   * edge between the same vertices (its twin edge), the face to its left, and
+   * the segments before and after it on that face. */
   this.target = undefined;
   this.twin = undefined;
   this.incidentFace = undefined;
@@ -26,7 +30,8 @@ function Edge() {
 }
 
 function Face(color) {
-  /* Represents a polygon. It stores a reference to an edge on its boundary. */
+  /* Represents a face/polygon in a DCEL. It stores a reference to an edge on
+   * its boundary. */
   this.start = undefined;
 
   if(color == undefined) {
@@ -37,20 +42,23 @@ function Face(color) {
 }
 
 function DCEL() {
-  /* Create a new doubly-connected edge list. Initialize it with two vertices
-   * at the origin, with two half-edges between them. This means there is one
-   * face, i.e. the infinite one. */
+  /* Create a new, empty doubly-connected edge list. Initialize it with two
+   * vertices at (-100,-100), with two half-edges between them. This means there
+   * is only one face, namely the infinite one. */
   this.order = 0;
 
+  // DCEL stores a set containing its faces
   let infiniteFace = new Face();
   this.faces = new Set([infiniteFace]);
 
+  // construct initial vertices
   let v1 = new Vertex(-100, -100);
   let v2 = new Vertex(-100, -100);
 
-  e = new Edge();
-  ep = new Edge();
+  e = new Edge(); // goes from v1 to v2
+  ep = new Edge(); // the twin of e
 
+  // set up initial arrangement of references between vertices, edges, and faces
   v1.incidentEdge = ep;
   v2.incidentEdge = e;
 

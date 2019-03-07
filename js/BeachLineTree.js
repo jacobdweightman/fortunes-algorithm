@@ -1,13 +1,23 @@
 function BeachLineTree() {
   /* This is a tree data structure used to represent the current state of the
    * beach line. As the sweep line progresses, segments are added and removed
-   * from this structure according to the site and vertex events that occur. */
+   * from this structure according to the site and vertex events that occur.
+   *
+   * The beach line tree stores the segments that make up the beach line. Each
+   * leaf corresponds to a segment on the beach line, and each internal vertex
+   * corresponds to an intersection between the segments represented by its
+   * rightmost left descendent and leftmost right descendent (a breakpoint). We
+   * traverse the tree using a modified binary search, where we move left if the
+   * point in question is to the left of the intersection point of the current
+   * node, or to the right if it is to the right. */
   this.leaves = 0;
   this.root = undefined;
 }
 
 BeachLineTree.prototype.setRoot = function(site) {
-  /* Used to set the root of the tree before there are any segments on it. */
+  /* Used to set the root of the tree before there are any segments on it. This
+   * takes the site which is the focus (in the sense of conic sections) of the
+   * first segment. */
   this.root = new Segment(site);
 }
 
@@ -17,12 +27,15 @@ BeachLineTree.prototype.isEmpty = function() {
 }
 
 BeachLineTree.prototype.findAbove = function(site) {
-  /* Return the segment on the beach line above the given site. */
+  /* Given a site, this function returns the segment on the beach line that is
+   * directly above that given site. This assumes the sweep line is at the
+   * y-coordinate of the site. This is done using a modified binary search. for
+   * each breakpoint from root to leaf, we check if the site is to the left or
+   * right of the breakpoint. */
   let node = this.root;
 
-  // This is a binary search tree traversal based on the point of intersections
-  // of breakpoints. If the site being checked is left of the breakpoint go
-  // left, otherwise go right.
+  // If the site being checked is left of the breakpoint go left, otherwise
+  // go right.
   while(node instanceof Breakpoint) {
     if(site.x < node.compute(site.y)) {
       node = node.left;
@@ -35,11 +48,11 @@ BeachLineTree.prototype.findAbove = function(site) {
 }
 
 BeachLineTree.prototype.split = function(segment, site) {
-  /* Insert a new segment for the given site into the beach line, splitting the
-   * given segment (should be above it) into two pieces (if the tree is not
-   * empty). On the tree, this creates two new breakpoints in the place of the
-   * leaf, with the three segments as new leaves. An array of the three new
-   * segments is returned, in left to right order. */
+  /* This function inserts a new segment corresponding to the given site into
+   * the beach line, splitting the given segment into two pieces on either side
+   * (if the tree is not empty). On the tree, this creates two new breakpoints
+   * in the place of the leaf, with the three segments as new leaves. An array
+   * of the three new segments is returned, in left to right order. */
 
    // create new subtree
    let nb1 = new Breakpoint(segment.site, site);
