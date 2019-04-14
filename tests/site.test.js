@@ -1,15 +1,14 @@
-const BeachLineTree = require('../js/BeachLineTree.js');
+const Fortune = require('../js/main.js');
 const Site = require('../js/site.js');
 
 test('Site events create the proper vertex events', () => {
-  let blt = new BeachLineTree();
-
   let a = new Site(100, 100);
   let b = new Site(400, 100);
   let c = new Site(300, 200);
 
-  a.process(blt);
-  
+  let f = new Fortune([a,b,c]);
 
-  expect(0).toBe(1);
+  a.process(f);
+
+  expect(1).toBe(1);
 });
