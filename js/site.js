@@ -9,21 +9,21 @@ function Site(x, y) {
   this.vertices = [];
 }
 
-Site.prototype.process = function() {
+Site.prototype.process = function(fortune) {
   console.log("Site event");
   console.log(this);
 
-  if(T.isEmpty()) {
-    T.setRoot(this);
+  if(fortune.T.isEmpty()) {
+    fortune.T.setRoot(this);
     return;
   }
 
-  let alpha = T.findAbove(this);
+  let alpha = fortune.T.findAbove(this);
   if(alpha.event !== undefined) {
     alpha.event.valid = false;
   }
 
-  let [l, c, r] = T.split(alpha, this);
+  let [l, c, r] = fortune.T.split(alpha, this);
 
   // TODO: handle edge information
 
@@ -33,12 +33,12 @@ Site.prototype.process = function() {
 
   if(ll !== undefined && cross(ll.site, l.site, c.site) > 0.01) {
     l.event = new VertexEvent(ll, l, c);
-    Q.add(l.event);
+    fortune.Q.add(l.event);
   }
 
   if(rr !== undefined && cross(c.site, r.site, rr.site) > 0.01) {
     r.event = new VertexEvent(c, r, rr);
-    Q.add(r.event);
+    fortune.Q.add(r.event);
   }
 }
 

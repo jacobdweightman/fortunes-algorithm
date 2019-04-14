@@ -1,46 +1,71 @@
-var canvas, c;
-var sites;
-var dcel;
-
-var Q; // priority queue of site events and vertex events
-var T; // tree representing beach line
-var y; // the y-coordinate of the sweepline
-
-var voronoi_vertices;
-
-function fortune(sites) {
-  /* This method initializes the priority queue and beach line tree for the
-   * running of Fortune's algorithm. The actual execution of the algorithm is
-   * handled by the keydown event listener below so that the user can step
-   * through it. */
-
-  // initialize priority queue Q with all site events
-  Q = new FastPriorityQueue(function(p,q) {
-    if(p.y != q.y) {
-      return p.y < q.y;
-    } else {
-      return p.x <= q.x;
-    }
-  });
-
-  for(let site of sites) {
-    Q.add(site);
-  }
-
-  // initialize beach line structure
-  T = new BeachLineTree();
-
-  // initialize DCEL for storing diagram
-  dcel = new DCEL();
-  voronoi_vertices = [];
-
-  draw();
+// import dependencies when running under test
+if(typeof module !== "undefined") {
+  FastPriorityQueue = require('../dep/FastPriorityQueue.js');
+  BeachLineTree = require('./BeachLineTree.js');
+  DCEL = require('./dcel.js').DCEL;
 }
 
-function infiniteEdges() {
+var canvas, c;
+
+var F;
+
+function Fortune(sites) {
+  /* Represents a runner object for Fortune's algorithm. This object will
+   * maintain the state of the algorithm, so that the user may step through
+   * its execution using its step method. */
+   this.Q = new FastPriorityQueue(function(p,q) {
+     if(p.y != q.y) {
+       return p.y < q.y;
+     } else {
+       return p.x <= q.x;
+     }
+   });
+
+   for(let site of sites) {
+     this.Q.add(site);
+   }
+
+   this.T = new BeachLineTree();
+   this.dcel = new DCEL();
+   this.y = undefined; // the y-coordinate of the sweep line
+}
+
+Fortune.prototype.draw = function(ctx) {
+  /* Draw the current state of the Voronoi diagram on the canvas with the given
+   * context. */
+
+   // clear screen
+   c.fillStyle = "#FFF";
+   c.fillRect(0, 0, 800, 600);
+
+   this.T.draw(this.y);
+
+   this.dcel.draw();
+
+   // draw sites
+   c.fillStyle = "#000";
+   for(let s of sites) {
+     c.fillRect(s.x-2.5, s.y-2.5, 5, 5);
+   }
+}
+
+Fortune.prototype.step = function() {
+  if(this.Q.isEmpty()) {
+    this.finish();
+    return false;
+  }
+
+  let p = this.Q.poll();
+  this.y = p.y;
+  p.process(this);
+
+  return true;
+}
+
+Fortune.prototype.finish = function() {
   // for each internal node
   let stack = [];
-  stack.push(T.root);
+  stack.push(this.T.root);
   while(stack.length !== 0) {
     let bp = stack.pop();
     if(bp.left !== undefined) {
@@ -61,10 +86,10 @@ function infiniteEdges() {
 
           if(cross(v, v.incidentEdge.prev.target, v1) * cross(v, v1, v.incidentEdge.next.target) * (v.x - 400) > 0) {
             console.log("v1");
-            dcel.addVert(v1.x, v1.y, v.incidentEdge);
+            this.dcel.addVert(v1.x, v1.y, v.incidentEdge);
           } else {
             console.log("v2");
-            dcel.addVert(v2.x, v2.y, v.incidentEdge);
+            this.dcel.addVert(v2.x, v2.y, v.incidentEdge);
           }
         }
       }
@@ -76,46 +101,15 @@ function keydown() {
   /* When the user presses a key, run the next event from the priority queue for
    * Fortune's algorithm. This way, the user can move through the algorithm
    * step by step. */
-  if(Q.isEmpty()) {
-    console.log("done.");
-    infiniteEdges();
-    draw();
+
+  if(!F.step()) {
     document.removeEventListener("keydown", keydown);
-    return;
   }
 
-  let p = Q.poll();
-  y = p.y;
-  p.process();
-
-  draw();
+  F.draw();
 }
 
 document.addEventListener("keydown", keydown);
-
-function draw() {
-  /* Draw the current state of the Voronoi diagram on the canvas. */
-
-  // clear screen
-  c.fillStyle = "#FFF";
-  c.fillRect(0, 0, 800, 600);
-
-  // draw beachline
-  T.draw(y);
-
-  // vertices
-  dcel.draw()
-  /*c.fillStyle = "#0F0";
-  for(let v of dcel.vertices) {
-    c.fillRect(v.x-5, v.y-5, 10, 10);
-  }*/
-
-  // draw sites
-  c.fillStyle = "#000";
-  for(let s of sites) {
-    c.fillRect(s.x-2.5, s.y-2.5, 5, 5);
-  }
-}
 
 document.addEventListener("DOMContentLoaded", function() {
   /* This is the first code that runs. It initializes the page for drawing, and
@@ -142,5 +136,11 @@ document.addEventListener("DOMContentLoaded", function() {
     sites.push(new Site(Math.floor(800 * Math.random()), Math.floor(600 * Math.random())));
   }*/
 
-  fortune(sites);
+  //fortune(sites);
+  F = new Fortune(sites);
+  F.draw();
 });
+
+if(typeof module !== "undefined") {
+  module.exports = Fortune;
+}

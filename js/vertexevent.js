@@ -33,7 +33,7 @@ function VertexEvent(a, b, c) {
    this.valid = true;
 }
 
-VertexEvent.prototype.process = function() {
+VertexEvent.prototype.process = function(fortune) {
   if(!this.valid) {
     return;
   }
@@ -55,11 +55,11 @@ VertexEvent.prototype.process = function() {
     prevEdge = this.b.site.vertices[0].incidentEdge;
     console.log(prevEdge);
   }*/
-  let v = dcel.addVert(this.x, this.y - this.r, prevEdge); // 0 is wrong
+  let v = fortune.dcel.addVert(this.x, this.y - this.r, prevEdge); // 0 is wrong
   v.sites = new Set([this.a.site, this.b.site, this.c.site]);
 
   if(matched.length === 2) {
-    dcel.splitFace(v, matched[1].incidentEdge);
+    fortune.dcel.splitFace(v, matched[1].incidentEdge);
   }
 
   this.a.site.vertices.push(v);
@@ -82,7 +82,7 @@ VertexEvent.prototype.process = function() {
   }
 
   // remove the disappearing segment from the beach line
-  T.remove(this.b);
+  fortune.T.remove(this.b);
 
   // get segment references for potential new VertexEvents
   let lnode = this.a.prev();
@@ -93,7 +93,7 @@ VertexEvent.prototype.process = function() {
   if(lnode && cross(lnode.site, this.a.site, this.c.site) > 0.01) {
     let ve = new VertexEvent(lnode, this.a, this.c);
     this.a.event = ve;
-    Q.add(ve);
+    fortune.Q.add(ve);
   }
 
   // if there is a right triple of arcs and the corresponding sites are directed
@@ -101,7 +101,7 @@ VertexEvent.prototype.process = function() {
   if(rnode && cross(this.a.site, this.c.site, rnode.site) > 0.01) {
     let ve = new VertexEvent(this.a, this.c, rnode);
     this.c.event = ve;
-    Q.add(ve);
+    fortune.Q.add(ve);
   }
 }
 
